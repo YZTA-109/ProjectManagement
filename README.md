@@ -6,10 +6,11 @@
 
 ## Takım Elemanları
 
-- John Doe: Product Owner
-- Jane Doe: Scrum Master
-- Atıl Samancıoğlu: Team Member/Developer
-
+- Ecrin Avcı: Product Owner
+- Gökçe Erdoğan: Scrum Master
+- Melisa Subaşı: Team Member/Developer
+- Emirhan Keser: Team Member/Developer
+- Tesnim Çelik: 
 ## Ürün İsmi
 
 --Movie App--
