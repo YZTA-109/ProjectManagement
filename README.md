@@ -6,10 +6,10 @@
 
 ## Takım Elemanları
 
-- Tesnim Çelik: Product Owner
-- Melisa Subaşı: Scrum Master
+- Emirhan Keser: Product Owner
+- Tesnim Çelik: Scrum Master
 - Gökçe Erdoğan: Team Member/Developer
-- Emirhan Keser: Team Member/Developer
+- Melisa Subaşı: Team Member/Developer
 - Ecrin Avcı: Team Member/Developer
 ## Ürün İsmi
 
