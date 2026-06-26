@@ -9,7 +9,6 @@
 - Emirhan Keser: Product Owner
 - Melisa Subaşı: Scrum Master
 - Gökçe Erdoğan: Team Member/Developer
-- Mevlüt Şeran: Team Member/Developer
 - Ecrin Avcı: Team Member/Developer
 ## Ürün İsmi
 
