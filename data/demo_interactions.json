@@ -1,0 +1,23 @@
+[
+  {
+    "drug_a": "warfarin",
+    "drug_b": "aspirin",
+    "severity": "high",
+    "description": "Warfarin ve aspirin birlikte kullanıldığında kanama riski artabilir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "metformin",
+    "drug_b": "furosemide",
+    "severity": "medium",
+    "description": "Metformin ve furosemide birlikte kullanıldığında böbrek fonksiyonları izlenmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "ibuprofen",
+    "drug_b": "lisinopril",
+    "severity": "medium",
+    "description": "NSAID grubu ilaçlar ACE inhibitörleriyle birlikte böbrek fonksiyonlarını olumsuz etkileyebilir.",
+    "source": "Demo interaction rule"
+  }
+]

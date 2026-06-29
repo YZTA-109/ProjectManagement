@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Demo Hasta 1",
+    "age": 72,
+    "gender": "Erkek",
+    "current_medications": ["warfarin", "metformin", "lisinopril"],
+    "lab_values": {
+      "egfr": 45,
+      "creatinine": 1.7,
+      "ast": 32,
+      "alt": 28
+    }
+  },
+  {
+    "name": "Demo Hasta 2",
+    "age": 58,
+    "gender": "Kadın",
+    "current_medications": ["aspirin", "atorvastatin"],
+    "lab_values": {
+      "egfr": 88,
+      "creatinine": 0.9,
+      "ast": 95,
+      "alt": 102
+    }
+  }
+]
