@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Demo Hasta 1 - Warfarin kullanan yaşlı hasta",
+    "age": 72,
+    "gender": "Erkek",
+    "current_medications": [
+      "warfarin",
+      "metformin",
+      "lisinopril",
+      "atorvastatin",
+      "furosemide"
+    ],
+    "lab_values": {
+      "egfr": 45,
+      "creatinine": 1.7,
+      "ast": 32,
+      "alt": 28
+    }
+  },
+  {
+    "name": "Demo Hasta 2 - Karaciğer enzimi yüksek hasta",
+    "age": 58,
+    "gender": "Kadın",
+    "current_medications": [
+      "aspirin",
+      "atorvastatin"
+    ],
+    "lab_values": {
+      "egfr": 88,
+      "creatinine": 0.9,
+      "ast": 95,
+      "alt": 102
+    }
+  },
+  {
+    "name": "Demo Hasta 3 - Ciddi renal risk",
+    "age": 76,
+    "gender": "Kadın",
+    "current_medications": [
+      "digoxin",
+      "lisinopril",
+      "spironolactone",
+      "furosemide",
+      "metformin",
+      "aspirin"
+    ],
+    "lab_values": {
+      "egfr": 24,
+      "creatinine": 2.4,
+      "ast": 44,
+      "alt": 40
+    }
+  },
+  {
+    "name": "Demo Hasta 4 - Düşük riskli profil",
+    "age": 42,
+    "gender": "Erkek",
+    "current_medications": [
+      "loratadine"
+    ],
+    "lab_values": {
+      "egfr": 98,
+      "creatinine": 0.8,
+      "ast": 22,
+      "alt": 25
+    }
+  }
+]

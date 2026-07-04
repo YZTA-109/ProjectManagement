@@ -1,0 +1,74 @@
+[
+  {
+    "drug_a": "warfarin",
+    "drug_b": "aspirin",
+    "severity": "high",
+    "description": "Warfarin ve aspirin birlikte kullanıldığında kanama riski artabilir.",
+    "recommendation": "Kanama riski açısından klinik değerlendirme, INR takibi ve alternatif analjezik/antiagregan seçenekleri düşünülmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "warfarin",
+    "drug_b": "ibuprofen",
+    "severity": "high",
+    "description": "Warfarin ve NSAID birlikte kullanımı gastrointestinal kanama riskini artırabilir.",
+    "recommendation": "NSAID yerine daha güvenli alternatifler değerlendirilmeli ve kanama bulguları yakından izlenmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "metformin",
+    "drug_b": "furosemide",
+    "severity": "medium",
+    "description": "Metformin ve furosemide birlikte kullanıldığında sıvı dengesi ve böbrek fonksiyonları etkilenebilir.",
+    "recommendation": "eGFR, kreatinin ve hidrasyon durumu izlenmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "ibuprofen",
+    "drug_b": "lisinopril",
+    "severity": "medium",
+    "description": "NSAID grubu ilaçlar ACE inhibitörleriyle birlikte böbrek fonksiyonlarını olumsuz etkileyebilir.",
+    "recommendation": "Böbrek fonksiyonu ve kan basıncı takibi yapılmalı; gerekirse alternatif analjezik düşünülmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "atorvastatin",
+    "drug_b": "clarithromycin",
+    "severity": "high",
+    "description": "Clarithromycin bazı statinlerin kan düzeyini artırarak kas toksisitesi riskini yükseltebilir.",
+    "recommendation": "Statin geçici kesilmesi, doz azaltımı veya alternatif antibiyotik seçimi değerlendirilebilir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "simvastatin",
+    "drug_b": "clarithromycin",
+    "severity": "high",
+    "description": "Simvastatin ve clarithromycin birlikte kullanımı ciddi kas toksisitesi riskini artırabilir.",
+    "recommendation": "Kombinasyondan kaçınma veya alternatif antibiyotik/statin seçimi değerlendirilmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "digoxin",
+    "drug_b": "amiodarone",
+    "severity": "high",
+    "description": "Amiodarone digoxin düzeylerini artırabilir ve toksisite riskini yükseltebilir.",
+    "recommendation": "Digoxin dozu ve düzeyi klinik bağlamda yeniden değerlendirilmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "lisinopril",
+    "drug_b": "potassium chloride",
+    "severity": "high",
+    "description": "ACE inhibitörü ve potasyum takviyesi birlikte hiperkalemi riskini artırabilir.",
+    "recommendation": "Serum potasyum takibi ve potasyum takviyesi gerekliliği yeniden değerlendirilmelidir.",
+    "source": "Demo interaction rule"
+  },
+  {
+    "drug_a": "spironolactone",
+    "drug_b": "lisinopril",
+    "severity": "high",
+    "description": "Spironolactone ve ACE inhibitörü birlikte hiperkalemi riskini artırabilir.",
+    "recommendation": "Potasyum ve böbrek fonksiyonları yakından izlenmelidir.",
+    "source": "Demo interaction rule"
+  }
+]
