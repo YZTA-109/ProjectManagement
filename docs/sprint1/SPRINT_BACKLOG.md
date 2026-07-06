@@ -17,8 +17,8 @@ Projenin geliştirme, test ve yönetim süreçlerinde aşağıdaki teknoloji yı
     Kod Yönetimi ve Versiyon Kontrolü: GitHub
 
     Proje Yönetimi ve Sprint Takibi: Trello & GitHub Project Board
-
-Ekip Rolleri ve Görev Dağımı
+    
+# Ekip Rolleri ve Görev Dağımı
 
 Projede çevik (Agile/Scrum) metodoloji uygulanmaktadır. Geliştirme sürecinde "Multi-Agent" (Çoklu Ajan) mimarisi benimsendiği için, geliştirici ekibindeki her üye Python ve Google Colab ortamında spesifik bir ajanın/modülün geliştirilmesinden ve Streamlit arayüzüne entegrasyonundan sorumludur.
 
