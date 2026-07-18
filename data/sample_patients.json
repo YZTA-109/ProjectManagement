@@ -52,6 +52,24 @@
     }
   },
   {
+    "name": "Demo Hasta 5 - Marka adıyla ilaç kullanan hasta (RxNorm)",
+    "age": 68,
+    "gender": "Kadın",
+    "current_medications": [
+      "Coumadin",
+      "Glucophage",
+      "Lipitor",
+      "Lasix",
+      "Prilosec"
+    ],
+    "lab_values": {
+      "egfr": 52,
+      "creatinine": 1.4,
+      "ast": 30,
+      "alt": 34
+    }
+  },
+  {
     "name": "Demo Hasta 4 - Düşük riskli profil",
     "age": 42,
     "gender": "Erkek",

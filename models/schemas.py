@@ -62,6 +62,22 @@ class PrescriptionRequest(BaseModel):
         return value.strip()
 
 
+class DrugInfo(BaseModel):
+    """External data gathered for a single drug (RxNorm + openFDA)."""
+
+    query_name: str
+    normalized_name: str | None = None
+    rxcui: str | None = None
+    is_brand: bool = False
+    ingredients: list[str] = Field(default_factory=list)
+    openfda_found: bool = False
+    boxed_warning: str | None = None
+    warnings: str | None = None
+    drug_interactions: str | None = None
+    indications: str | None = None
+    source: str = "unknown"
+
+
 class RiskFinding(BaseModel):
     title: str
     severity: Severity
@@ -77,3 +93,6 @@ class AnalysisResult(BaseModel):
     findings: list[RiskFinding]
     recommendation_summary: str
     markdown_report: str
+    new_drug_info: DrugInfo | None = None
+    ai_summary: str | None = None
+    ai_model: str | None = None

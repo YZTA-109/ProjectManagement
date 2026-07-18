@@ -1,0 +1,8 @@
+[theme]
+# PolyPharm AI — zorunlu açık tema (koyu tema devre dışı)
+base = "light"
+primaryColor = "#0B7285"
+backgroundColor = "#F4F8F9"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#243B53"
+font = "sans serif"

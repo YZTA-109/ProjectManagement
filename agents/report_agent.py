@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from models.schemas import Patient, RiskFinding
+from models.schemas import DrugInfo, Patient, RiskFinding
 
 
 class ReportAgent:
@@ -42,6 +42,8 @@ class ReportAgent:
         risk_level: str,
         findings: list[RiskFinding],
         summary: str,
+        drug_info: DrugInfo | None = None,
+        ai_summary: str | None = None,
     ) -> str:
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M")
 
@@ -72,9 +74,36 @@ class ReportAgent:
             f"- Risk seviyesi: **{risk_level}**",
             f"- Özet: {summary}",
             "",
-            "## Risk Bulguları",
-            "",
         ]
+
+        if drug_info is not None and drug_info.normalized_name:
+            lines.extend(
+                [
+                    "## İlaç Bilgisi (Harici Kaynaklar)",
+                    "",
+                    f"- RxNorm eşleşmesi: {drug_info.normalized_name} (RXCUI: {drug_info.rxcui})",
+                    f"- Etken madde(ler): {', '.join(drug_info.ingredients) if drug_info.ingredients else 'Bilinmiyor'}",
+                    f"- Veri kaynağı: {drug_info.source}",
+                    "",
+                ]
+            )
+
+        if ai_summary:
+            lines.extend(
+                [
+                    "## Yapay Zeka Değerlendirmesi",
+                    "",
+                    ai_summary,
+                    "",
+                ]
+            )
+
+        lines.extend(
+            [
+                "## Risk Bulguları",
+                "",
+            ]
+        )
 
         if not findings:
             lines.append("Belirgin bir risk bulgusu tespit edilmedi.")
