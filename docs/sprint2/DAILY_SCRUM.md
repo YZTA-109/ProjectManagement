@@ -8,7 +8,7 @@
     -  API anahtarları .env dosyasına taşındı.
 - Ne yapacağız?
   - openFDA API entegrasyonu eklenecek ve kutulu uyarı mantığı sisteme dahil edilecek.
-  - Blocker: Yok.
+- Blocker: Yok.
 
 ## Gün 7
 
