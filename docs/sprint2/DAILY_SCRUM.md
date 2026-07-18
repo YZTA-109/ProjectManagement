@@ -11,9 +11,10 @@
   - Blocker: Yok.
 
 ## Gün 7
+
 - Ne yaptık?
-          - openFDA drug/label istemcisi eklendi.
-          - FDA kutulu uyarıları ve prospektüs metinlerinden dinamik etkileşim tespiti (FdaLabelInteractionAgent) analize dahil edildi.
+      - openFDA drug/label istemcisi eklendi.
+      - FDA kutulu uyarıları ve prospektüs metinlerinden dinamik etkileşim tespiti (FdaLabelInteractionAgent) analize dahil edildi.
 -  Ne yapacağız?
       - RxNorm üzerinden marka adı çözümleme (marka → etken madde) işlemi kurgulanacak.
       - Yapay zeka ajanının entegrasyonuna başlanacak.
@@ -22,11 +23,11 @@
 
 ## Gün 8
 - Ne yaptık?
--  Marka adıyla girilen ilaçlar etken maddeye çözümlenir hale getirildi.
--  GeminiExplainer ajanı (gemini-3.1-flash-lite) eklendi ve Türkçe yapay zeka klinik özeti üretilmeye başlandı.
-  - Ne yapacağız? 
--  Streamlit arayüzü baştan tasarlanacak ve sekmeli yapıya geçirilecek.
--  Demo veriler genişletilecek.
+    - Marka adıyla girilen ilaçlar etken maddeye çözümlenir hale getirildi.
+    -  GeminiExplainer ajanı (gemini-3.1-flash-lite) eklendi ve Türkçe yapay zeka klinik özeti üretilmeye başlandı.
+   - Ne yapacağız? 
+    -  Streamlit arayüzü baştan tasarlanacak ve sekmeli yapıya geçirilecek.
+    -  Demo veriler genişletilecek.
   - Blocker: Yok.
 
 ## Gün 9
