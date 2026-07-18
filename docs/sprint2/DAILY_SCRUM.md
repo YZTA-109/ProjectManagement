@@ -12,8 +12,8 @@
 
 ## Gün 7
 - Ne yaptık?
-          -  openFDA drug/label istemcisi eklendi.
-          -  FDA kutulu uyarıları ve prospektüs metinlerinden dinamik etkileşim tespiti (FdaLabelInteractionAgent) analize dahil edildi.
+          - openFDA drug/label istemcisi eklendi.
+          - FDA kutulu uyarıları ve prospektüs metinlerinden dinamik etkileşim tespiti (FdaLabelInteractionAgent) analize dahil edildi.
 -  Ne yapacağız?
       - RxNorm üzerinden marka adı çözümleme (marka → etken madde) işlemi kurgulanacak.
       - Yapay zeka ajanının entegrasyonuna başlanacak.
