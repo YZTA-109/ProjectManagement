@@ -63,6 +63,9 @@ kısa süre içinde birlikte değerlendirmek zorunda kalabilir.
 - Pytest
 - JSON tabanlı demo veri
 - Agent tabanlı modüler mimari
+- **RxNorm** (lokal SQLite veritabanı — ilaç adı normalizasyonu, marka → etken madde çözümlemesi)
+- **openFDA API** (resmi FDA prospektüs verileri: kutulu uyarı, etkileşim metinleri)
+- **Google Gemini** (google-genai, Türkçe yapay zeka klinik özeti)
 
 ## Proje Mimarisi
 
@@ -75,17 +78,29 @@ PolyPharm AI
 │   └── main.py
 │
 ├── agents/
+│   ├── fda_interaction_agent.py
+│   ├── gemini_explainer.py
 │   ├── interaction_agent.py
 │   ├── lab_risk_agent.py
 │   ├── orchestrator.py
 │   ├── report_agent.py
 │   └── scoring_agent.py
 │
+├── providers/
+│   ├── drug_data_service.py
+│   ├── local_json_provider.py
+│   ├── openfda_client.py
+│   └── rxnorm_provider.py
+│
+├── scripts/
+│   └── build_rxnorm_db.py
+│
 ├── models/
 │   └── schemas.py
 │
 ├── data/
 │   ├── demo_interactions.json
+│   ├── rxnorm.db
 │   └── sample_patients.json
 │
 ├── docs/
@@ -96,10 +111,25 @@ PolyPharm AI
 │	│	├──RETROSPECTIVE.md
 │	│	├──SPRINT_BACKLOG.md
 │	│	├──SPRINT1_REVIEW.md
+│   ├── sprint2/
+│	│	├──DAILY_SCRUM.md
+│	│	├──RETROSPECTIVE.md
+│	│	├──SPRINT_BACKLOG.md
+│	│	├──SPRINT2_REVIEW.md
 │   ├── product_backlog.md
 │   └── user_stories.md
 │
-├── tests/test_sprint1_mvp.py
+├── tests/
+│   ├── test_fda_interaction_agent.py
+│   ├── test_gemini_explainer.py
+│   ├── test_interaction_agent.py
+│   ├── test_lab_risk_agent.py
+│   ├── test_local_json_provider.py
+│   ├── test_openfda_client.py
+│   ├── test_orchestrator.py
+│   ├── test_report_agent.py
+│   ├── test_rxnorm_provider.py
+│   └── test_scoring_agent.py
 │
 ├── requirements.txt
 └── README.md
@@ -107,11 +137,22 @@ PolyPharm AI
 
 ### Agent Yapısı
 
-- **InteractionAgent:** Yeni yazılmak istenen ilacın hastanın mevcut ilaçlarıyla demo veri üzerinden etkileşimini kontrol eder.
+- **InteractionAgent:** Yeni yazılmak istenen ilacın hastanın mevcut ilaçlarıyla etkileşimini lokal kurallar üzerinden kontrol eder; ilaç adlarını RxNorm üzerinden etken maddeye çözümleyerek eşleştirir (Sprint 2).
+- **FdaLabelInteractionAgent (Sprint 2):** Yeni ilacın FDA prospektüsündeki etkileşim bölümünde hastanın mevcut ilaçlarını (ve tersini) arar; eşleşmeleri prospektüs alıntısıyla bulguya dönüştürür. Lokal kuralların kapsamadığı kombinasyonları resmi etiket verisiyle yakalar.
 - **LabRiskAgent:** eGFR, kreatinin, AST ve ALT değerlerine göre laboratuvar temelli riskleri analiz eder.
 - **ScoringAgent:** Bulunan risklere göre güvenlik skoru ve genel risk seviyesi üretir.
 - **ReportAgent:** Risk bulgularını kullanıcı dostu bir özet haline getirir.
-- **Orchestrator:** Tüm agent çıktılarını tek analiz akışında birleştirir.
+- **GeminiExplainer (Sprint 2):** Bulguları ve openFDA bağlamını Gemini ile Türkçe klinik özete dönüştürür; API erişilemezse sessizce devre dışı kalır.
+- **Orchestrator:** Tüm agent çıktılarını ve veri sağlayıcılarını tek analiz akışında birleştirir.
+
+### Veri Sağlayıcı Katmanı (Sprint 2)
+
+- **DrugDataService:** Tüm harici kaynakları tek arayüz arkasında toplayan facade.
+- **RxNormProvider:** Lokal SQLite veritabanından ilaç adı → RXCUI ve marka → etken madde sorguları.
+- **OpenFdaClient:** openFDA drug/label API'sinden prospektüs verisi; önbellekli, zaman aşımlı, hata durumunda sessiz düşüş.
+- **LocalJsonInteractionProvider:** JSON etkileşim kurallarını sağlayan yerel kaynak.
+
+Her kaynak bağımsız olarak kapatılabilir; hiçbiri erişilemediğinde uygulama Sprint 1'deki kural tabanlı davranışıyla çalışmaya devam eder.
 
 ## Kurulum ve Çalıştırma
 
@@ -127,10 +168,31 @@ Windows için sanal ortamı aktif edin:
 .venv\Scripts\activate
 ```
 
+macOS/Linux için sanal ortamı aktif edin:
+
+```bash
+source .venv/bin/activate
+```
+
 Bağımlılıkları yükleyin:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Harici API'ler için proje kökünde `.env` dosyası oluşturun (opsiyonel — anahtar
+olmadan da uygulama kural tabanlı modda çalışır):
+
+```env
+GEMINI_API_KEY=your-gemini-api-key
+OPENFDA_API_KEY=your-openfda-api-key
+```
+
+RxNorm veritabanı (`data/rxnorm.db`) depoyla birlikte gelir. Yeni bir RxNorm
+sürümünden yeniden üretmek isterseniz:
+
+```bash
+python scripts/build_rxnorm_db.py /path/to/RxNorm_full/rrf
 ```
 
 Streamlit uygulamasını çalıştırın:
@@ -312,20 +374,56 @@ Bu sprintte özellikle ürün fikrinin teknik olarak uygulanabilirliği gösteri
 
 # Sprint 2
 
+## Sprint Notları
+
+Sprint 2 kapsamında MVP, harici veri kaynakları ve yapay zeka desteğiyle güçlendirilmiştir. Sprint 1 retrospektifindeki en önemli aksiyon olan "doğrulanmış harici kaynak entegrasyonu" üç kaynakla kapatılmıştır: **RxNorm** (lokal ilaç adı veritabanı), **openFDA** (resmi FDA prospektüs API'si) ve **Google Gemini** (Türkçe yapay zeka klinik özeti).
+
+Tüm harici bağımlılıklar `providers/` altındaki `DrugDataService` katmanı arkasında toplanmıştır. Herhangi bir kaynak erişilemez olduğunda uygulama Sprint 1'deki kural tabanlı davranışına geri döner (graceful degradation); bu sayede internet bağlantısı veya API anahtarı olmadan da çalışır.
+
 ## Sprint Hedefi
 
-Sprint 2 kapsamında hedef, Sprint 1'de oluşturulan çalışan MVP'nin veri kalitesini, analiz kapsamını ve kullanıcı deneyimini geliştirmektir.
+> Sprint 1'de oluşturulan çalışan MVP'nin veri kalitesini, analiz kapsamını ve kullanıcı deneyimini harici veri kaynakları ve yapay zeka desteğiyle geliştirmek.
 
-Planlanan geliştirmeler:
+## Sprint İçinde Tamamlananlar
 
-- Harici ilaç veri kaynağı/API araştırması
-- API veya lokal veri sağlayıcı yapısı için `DrugDataProvider` katmanı
-- Demo veri setinin genişletilmesi
-- RAG tabanlı kaynak sorgulama yapısının araştırılması
-- Daha ayrıntılı raporlama
-- UI/UX iyileştirmeleri
-- Test kapsamının artırılması
-- Canlıya alma seçeneklerinin değerlendirilmesi
+- `DrugDataService` facade'ı ve `providers/` katmanı oluşturuldu.
+- RxNorm tam sürümünden 2,6 MB'lık lokal SQLite veritabanı üreten `scripts/build_rxnorm_db.py` yazıldı (23.401 ilaç adı, 7.544 marka→etken madde ilişkisi).
+- Marka adıyla girilen ilaçlar etken maddeye çözümlenir hale getirildi (örn. Coumadin → warfarin, Lipitor → atorvastatin); etkileşim kuralları etken madde üzerinden eşleşiyor.
+- openFDA drug/label istemcisi eklendi: kutulu uyarı, uyarılar, etkileşim metni ve endikasyonlar analize dahil edildi.
+- FDA kutulu uyarısı bulunan ilaçlar için otomatik yüksek şiddetli risk bulgusu eklendi.
+- FDA prospektüs metinlerinden dinamik etkileşim tespiti eklendi (`FdaLabelInteractionAgent`): lokal 29 kuralın kapsamadığı kombinasyonlar (örn. naproxen-warfarin, prednisone-warfarin) resmi etiket verisiyle yakalanıyor.
+- Gemini tabanlı `GeminiExplainer` ajanı eklendi (gemini-3.1-flash-lite): bulgular + openFDA bağlamından Türkçe klinik özet üretiyor.
+- Demo etkileşim veri seti 9 kuraldan 29 kurala genişletildi.
+- Marka adlı ilaç kullanan yeni demo hasta eklendi (RxNorm çözümleme senaryosu).
+- Streamlit arayüzü sekmeli sonuç görünümüne geçirildi (Özet / Risk Bulguları / İlaç Bilgisi / Ham Çıktı).
+- Arayüze RxNorm isim geri bildirimi, öneri sistemi ve veri kaynağı aç-kapa anahtarları eklendi.
+- Markdown raporuna harici kaynak bilgisi ve yapay zeka değerlendirmesi bölümleri eklendi.
+- 51 otomatik test yazıldı; openFDA ve Gemini mock'landığı için testler çevrimdışı çalışıyor.
+- API anahtarları `.env` dosyasına taşındı ve `python-dotenv` ile yükleniyor.
+
+## Sprint Backlog
+
+| No | User Story / Görev | Öncelik | Durum |
+| --- | --- | --- | --- |
+| 1 | Geliştirici olarak harici veri kaynaklarını tek bir `DrugDataProvider` katmanı arkasında toplamak istiyorum. | Yüksek | Tamamlandı |
+| 2 | Doktor olarak yeni ilacın FDA prospektüs uyarılarını görmek istiyorum. | Yüksek | Tamamlandı |
+| 3 | Doktor olarak marka adıyla ilaç girebilmek istiyorum; sistem etken maddeye çözümleyerek etkileşim kontrolü yapsın. | Yüksek | Tamamlandı |
+| 4 | Doktor olarak analiz sonucunun Türkçe yapay zeka özetini görmek istiyorum. | Orta | Tamamlandı |
+| 5 | Geliştirici olarak demo etkileşim veri setini genişletmek istiyorum. | Orta | Tamamlandı |
+| 6 | Doktor olarak analiz sonuçlarını sekmeli, düzenli bir arayüzde görmek istiyorum. | Orta | Tamamlandı |
+| 7 | Kullanıcı olarak raporda harici kaynak bilgisi ve AI özetini de görmek istiyorum. | Düşük | Tamamlandı |
+| 8 | Geliştirici olarak tüm agent ve provider'lar için otomatik test istiyorum. | Yüksek | Tamamlandı |
+| 9 | Geliştirici olarak canlıya alma seçeneklerini değerlendirmek istiyorum. | Düşük | Sprint 3'e devredildi |
+
+## Ürün Durumu
+
+Sprint 2 sonunda ürün; marka adı çözümlemesi, resmi FDA prospektüs verisi ve yapay zeka özetiyle zenginleştirilmiş, 51 otomatik testle doğrulanan bir karar destek prototipi seviyesindedir. Arayüz, beyaz "hastane paneli" temasıyla kart tabanlı olarak yeniden tasarlanmıştır (zorunlu açık tema, EKG animasyonlu skor kartı, şiddet renkleriyle kodlanmış bulgu kartları). Ayrıntılı sprint dokümanları için: `docs/sprint2/`.
+
+### Ekran Görüntüleri
+
+![Sprint 2 Dashboard](docs/sprint2/screenshots/sprint2_dashboard.png)
+
+![Sprint 2 Analysis Result](docs/sprint2/screenshots/sprint2_analysis_result.png)
 
 ---
 
